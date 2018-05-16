@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.GDPU.market.user.dao.UserDao">
+
+    <select id="isUser" resultType="User">
+        SELECT *
+        FROM user
+        WHERE username=#{user.username} AND password=#{user.password}
+    </select>
+
+    <insert id="register" useGeneratedKeys="true">
+        INSERT INTO user (username, password)
+        VALUES (#{user.username}, #{user.password})
+    </insert>
+
+    <select id="existUser" resultType="java.lang.Integer">
+        SELECT *
+        FROM user
+        WHERE username=#{username}
+    </select>
+
+</mapper>

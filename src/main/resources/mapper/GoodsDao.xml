@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.GDPU.market.goods.dao.GoodsDao">
+
+    <select id="queryAll" resultType="Goods">
+        SELECT
+            goods.gid,
+            goods.gname,
+            goods.price,
+            goods.brand,
+            goods.inventory,
+            goods.image,
+            category.cid   "category.cid",
+            category.cname "category.cname"
+        FROM goods
+            LEFT JOIN category ON category.cid = goods.cid
+    </select>
+
+    <select id="queryById" resultType="Goods">
+        SELECT
+            goods.gid,
+            goods.gname,
+            goods.price,
+            goods.brand,
+            goods.inventory,
+            goods.image,
+            category.cid   "category.cid",
+            category.cname "category.cname"
+        FROM goods
+            LEFT JOIN category ON category.cid = goods.cid
+        WHERE gid = #{gid}
+    </select>
+
+    <insert id="addGoods" parameterType="Goods" useGeneratedKeys="true">
+        INSERT INTO goods (gname, price, brand, inventory, cid, image)
+        VALUES (#{gname}, #{price}, #{brand}, #{inventory}, #{category.cid}, #{image})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM goods
+        WHERE goods.gid = #{gid}
+    </delete>
+
+    <select id="queryByName" resultType="Goods">
+        SELECT *
+        FROM goods
+        WHERE gname LIKE concat(concat('%', #{search}), '%')
+    </select>
+
+
+    <select id="queryByCategory" resultType="Goods">
+        SELECT *
+        FROM goods
+        WHERE cid = #{cid}
+    </select>
+    <!--
+
+    <select id="goods" resultType="Goods">
+        SELECT *
+        FROM goods
+    </select>
+
+
+
+    <delete id="deleteGoods">
+        DELETE FROM goods where gid=#{gid}
+    </delete>
+
+    <select id="getCid" resultType="java.lang.Integer">
+        SELECT cid
+        FROM goods
+        WHERE gid=#{gid}
+    </select>
+
+    <select id="getGoods" resultType="Goods">
+        SELECT *
+        FROM goods
+        WHERE gid=#{gid}
+    </select>
+    -->
+</mapper>

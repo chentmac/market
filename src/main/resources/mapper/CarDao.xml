@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.GDPU.market.car.dao.CarDao">
+
+    <insert id="addToCar" parameterType="CarItems" useGeneratedKeys="true">
+        INSERT INTO carItems (gid, carid, counts, subTotal)
+        VALUES (#{goods.gid}, #{car.carid}, #{counts}, #{subTotal})
+        <selectKey ></selectKey>
+    </insert>
+
+    <select id="getCar" resultType="Car">
+        SELECT
+          car.carid,
+          car.total,
+          user.uid "user.uid",
+          user.username "user.username"
+        FROM car
+        LEFT JOIN user ON user.uid=car.uid
+        WHERE car.uid=#{user.uid}
+    </select>
+
+    <select id="getCarItems" resultType="CarItems">
+        SELECT
+          carItems.ciid,
+          carItems.counts,
+          carItems.subTotal,
+          goods.gid "goods.gid",
+          goods.gname "goods.gname",
+          goods.price "goods.price",
+          goods.brand "goods.brand",
+          goods.inventory "goods.inventory",
+          goods.image "goods.image",
+          car.carid "car.carid",
+          car.total "car.total",
+          user.uid "user.uid",
+          user.username "user.username"
+        FROM carItems
+          LEFT JOIN goods ON goods.gid=carItems.gid
+          LEFT JOIN car ON car.carid=carItems.carid
+          LEFT JOIN user ON user.uid=car.uid
+        WHERE carItems.carid=#{carid}
+    </select>
+
+    <insert id="newCar" useGeneratedKeys="true">
+        INSERT INTO car (uid)
+        VALUES (#{user.uid})
+    </insert>
+
+    <update id="updateCar">
+        UPDATE car
+        SET total=#{total}
+        WHERE carid=#{carId}
+    </update>
+
+    <delete id="deleteByCiid">
+        DELETE FROM carItems
+        WHERE ciid=#{ciid}
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE FROM carItems
+        WHERE carid=#{carid}
+    </delete>
+</mapper>
